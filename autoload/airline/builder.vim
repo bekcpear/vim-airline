@@ -131,6 +131,9 @@ function! airline#builder#should_change_group(group1, group2)
   if a:group1 == a:group2
     return 0
   endif
+  if a:group1 ==# 'airline_b' || a:group2 ==# 'airline_b'
+    return 1
+  endif
   let color1 = airline#highlighter#get_highlight(a:group1)
   let color2 = airline#highlighter#get_highlight(a:group2)
   return color1[1] != color2[1] || color1[0] != color2[0]

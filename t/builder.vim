@@ -18,14 +18,18 @@ describe 'active builder'
     Expect stl =~ '%#Normal#hello%#Normal_to_Search#%#Search#world'
   end
 
-  it 'should reuse highlight group if background colors match'
+  it 'should reuse highlight group if background colors match unless airline_b group contained'
     call airline#highlighter#reset_hlcache()
     highlight Foo1 ctermfg=1 ctermbg=2
     highlight Foo2 ctermfg=1 ctermbg=2
+    highlight airline_b ctermfg=1 ctermbg=2
+    highlight Foo4 ctermfg=1 ctermbg=2
     call s:builder.add_section('Foo1', 'hello')
     call s:builder.add_section('Foo2', 'world')
+    call s:builder.add_section('airline_b', 'hello')
+    call s:builder.add_section('Foo4', 'vim-airline')
     let stl = s:builder.build()
-    Expect stl =~ '%#Foo1#helloworld'
+    Expect stl =~ '%#Foo1#helloworld%#Foo2_to_airline_b#%#airline_b#hello%#airline_b_to_Foo4#%#Foo4#vim-airline'
   end
 
   it 'should switch highlight groups if foreground colors differ'
